@@ -1,0 +1,51 @@
+package me.aryanrai.tms.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Destination implements Serializable {
+    private final String name;
+    private final List<Activity> activities;
+
+    public Destination(String name) {
+        this.name = name;
+        this.activities = new ArrayList<>();
+    }
+
+    public void addActivity(Activity activity) {
+        Destination previousDestination = activity.getDestination();
+        if (previousDestination != null)
+            previousDestination.removeActivity(activity);
+        activity.setDestination(this);
+        this.activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        this.activities.remove(activity);
+        System.out.println("Removed " + activity.getName() + " from " + this.name);
+    }
+
+    public void printDetails() {
+        System.out.println(name);
+        if (this.activities.isEmpty()) {
+            System.out.println("No Activities found!");
+            return;
+        }
+        System.out.println("\tActivities:-");
+        char index = 'a';
+        for (Activity activity : this.activities) {
+            System.out.print("\t" + index + ".\t");
+            activity.printDetails();
+            index++;
+        }
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public List<Activity> getActivities() {
+        return this.activities;
+    }
+}
