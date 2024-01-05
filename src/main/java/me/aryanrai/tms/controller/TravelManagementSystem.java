@@ -33,8 +33,8 @@ public class TravelManagementSystem implements Serializable {
         return true;
     }
 
-    public boolean listAvailableActivities(String passengerName) {
-        Passenger passenger = getPassenger(passengerName);
+    public boolean listAvailableActivities(int passengerNumber) {
+        Passenger passenger = getPassenger(passengerNumber);
         if (passenger == null) {
             System.out.println("Could not list available Activities!");
             return false;
@@ -59,6 +59,23 @@ public class TravelManagementSystem implements Serializable {
         return true;
     }
 
+    public boolean listPassengersWithName(String passengerName) {
+        passengerName = passengerName.trim().toLowerCase();
+        List<Passenger> passengerList = new ArrayList<>();
+        for (Passenger passenger : passengers) {
+            if (passenger.getName().toLowerCase().contains(passengerName))
+                passengerList.add(passenger);
+        }
+        if (passengerList.isEmpty()) {
+            System.out.printf("No match found for '%s'!\n", passengerName);
+            return false;
+        }
+        for (Passenger passenger : passengerList) {
+            System.out.printf("%d - %s\n", passenger.getNumber(), passenger.getName());
+        }
+        return true;
+    }
+
     public TravelPackage getTravelPackage(int index) {
         if (index < 1 || index > travelPackages.size()) {
             System.out.println("Invalid Index!");
@@ -67,12 +84,12 @@ public class TravelManagementSystem implements Serializable {
         return travelPackages.get(index - 1);
     }
 
-    public Passenger getPassenger(String name) {
+    public Passenger getPassenger(int passengerNumber) {
         for (Passenger passenger : passengers) {
-            if (passenger.getName().equals(name))
+            if (passenger.getNumber() == passengerNumber)
                 return passenger;
         }
-        System.out.println("Passenger not found!");
+        System.out.printf("Passenger with number %d not found!\n", passengerNumber);
         return null;
     }
 
@@ -129,21 +146,15 @@ public class TravelManagementSystem implements Serializable {
         destination.addActivity(activity);
     }
 
-    public void addPassenger(String name, int number, double balance, Passenger.Type type) {
-        for (Passenger passenger : passengers) {
-            if (passenger.getName().equals(name)) {
-                System.out.println("Passenger already exists!");
-                return;
-            }
-        }
-        Passenger passenger = new Passenger(name, number, balance, type);
+    public void addPassenger(String name, double balance, Passenger.Type type) {
+        Passenger passenger = new Passenger(name, passengers.size() + 1, balance, type);
         passengers.add(passenger);
         System.out.println("Passenger added successfully!");
     }
 
-    public void signUpForPackage(String name, int travelPackageChoice) {
+    public void signUpForPackage(int passengerNumber, int travelPackageChoice) {
         TravelPackage travelPackage = getTravelPackage(travelPackageChoice);
-        Passenger passenger = getPassenger(name);
+        Passenger passenger = getPassenger(passengerNumber);
         if (travelPackage == null || passenger == null) {
             System.out.println("Could not sign up Passenger!");
             return;
@@ -157,8 +168,8 @@ public class TravelManagementSystem implements Serializable {
 
     }
 
-    public void signUpForActivity(String name, String activityName) {
-        Passenger passenger = getPassenger(name);
+    public void signUpForActivity(int passengerNumber, String activityName) {
+        Passenger passenger = getPassenger(passengerNumber);
         if (passenger == null) {
             System.out.println("Could not sign up Passenger!");
             return;
@@ -183,6 +194,13 @@ public class TravelManagementSystem implements Serializable {
         }
     }
 
+    public void printPassengerDetails(int passengerNumber) {
+        Passenger passenger = getPassenger(passengerNumber);
+        if (passenger == null)
+            return;
+        passenger.printDetails();
+    }
+
     public void printItinerary(int travelPackageChoice) {
         TravelPackage travelPackage = getTravelPackage(travelPackageChoice);
         if (travelPackage == null) {
@@ -199,15 +217,5 @@ public class TravelManagementSystem implements Serializable {
             return;
         }
         travelPackage.printPassengers();
-    }
-
-    public void printPassengerDetails(String name) {
-        for (Passenger passenger : passengers) {
-            if (passenger.getName().equals(name)) {
-                passenger.printDetails();
-                return;
-            }
-        }
-        System.out.println("Passenger not found!");
     }
 }

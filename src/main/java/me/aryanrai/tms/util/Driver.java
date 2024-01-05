@@ -66,53 +66,66 @@ public class Driver {
         }
     }
 
-    private static void printPassengerDetails(Scanner scan, TravelManagementSystem tms) {
-        System.out.print("Enter the name of the Passenger: ");
+    private static int searchForPassenger(Scanner scan, TravelManagementSystem tms) {
+        System.out.print("Enter the name of the Passenger to search for: ");
         String name = scan.nextLine();
-        tms.printPassengerDetails(name);
+        if (!tms.listPassengersWithName(name)) {
+            return -1;
+        }
+        System.out.print("Enter the Passenger number: ");
+        int passengerNumber = scan.nextInt();
+        scan.nextLine();
+        return passengerNumber;
+    }
+
+    private static void printPassengerDetails(Scanner scan, TravelManagementSystem tms) {
+        int passengerNumber = searchForPassenger(scan, tms);
+        if (passengerNumber == -1)
+            return;
+        tms.printPassengerDetails(passengerNumber);
     }
 
     private static void signUpForActivity(Scanner scan, TravelManagementSystem tms) {
-        System.out.print("Enter the name of the Passenger: ");
-        String name = scan.nextLine();
-        if (!tms.listAvailableActivities(name))
+        int passengerNumber = searchForPassenger(scan, tms);
+        if (passengerNumber == -1)
+            return;
+        if (!tms.listAvailableActivities(passengerNumber))
             return;
         System.out.print("Enter the name of the Activity: ");
         String activityName = scan.nextLine();
         System.out.println("\nPassenger Details:-");
-        System.out.println("Name: " + name);
+        System.out.println("Name: " + tms.getPassenger(passengerNumber).getName());
         System.out.println("Activity Name: " + activityName);
-        System.out.println("Are you sure you want to sign up this Passenger for the Activity? (y/n)");
+        System.out.println("Are you sure you want to sign up for this Activity? (y/n)");
         char confirm = scan.nextLine().charAt(0);
         if (confirm != 'y' && confirm != 'Y')
             return;
-        tms.signUpForActivity(name, activityName);
+        tms.signUpForActivity(passengerNumber, activityName);
     }
 
     private static void signUpForPackage(Scanner scan, TravelManagementSystem tms) {
-        System.out.print("Enter the name of the Passenger: ");
-        String name = scan.nextLine();
+        int passengerNumber = searchForPassenger(scan, tms);
+        if (passengerNumber == -1)
+            return;
         System.out.println("Choose the Travel Package:-");
         if (tms.listTravelPackages()) {
             System.out.print("Enter your choice: ");
             int travelPackageChoice = scan.nextInt();
             scan.nextLine();
             System.out.println("\nPassenger Details:-");
-            System.out.println("Name: " + name);
-            System.out.println("Are you sure you want to sign up this Passenger for the Travel Package? (y/n)");
+            System.out.println("Name: " + tms.getPassenger(passengerNumber).getName());
+            System.out.println("Travel Package Name: " + tms.getTravelPackage(travelPackageChoice).getName());
+            System.out.println("Are you sure you want to sign up for this Travel Package? (y/n)");
             char confirm = scan.nextLine().charAt(0);
             if (confirm != 'y' && confirm != 'Y')
                 return;
-            tms.signUpForPackage(name, travelPackageChoice);
+            tms.signUpForPackage(passengerNumber, travelPackageChoice);
         }
     }
 
     private static void addPassenger(Scanner scan, TravelManagementSystem tms) {
         System.out.print("Enter the name of the Passenger: ");
-        String name = scan.nextLine();
-        System.out.print("Enter the number of the Passenger: ");
-        int number = scan.nextInt();
-        scan.nextLine();
+        String name = scan.nextLine().trim();
         System.out.print("Enter the balance of the Passenger: ");
         double balance = scan.nextDouble();
         scan.nextLine();
@@ -130,14 +143,13 @@ public class Driver {
         Passenger.Type type = Passenger.Type.values()[typeChoice - 1];
         System.out.println("\nPassenger Details:-");
         System.out.println("Name: " + name);
-        System.out.println("Number: " + number);
         System.out.println("Balance: " + balance);
         System.out.println("Type: " + type);
         System.out.println("Are you sure you want to add this Passenger? (y/n)");
         char confirm = scan.nextLine().charAt(0);
         if (confirm != 'y' && confirm != 'Y')
             return;
-        tms.addPassenger(name, number, balance, type);
+        tms.addPassenger(name, balance, type);
     }
 
     private static void addActivity(Scanner scan, TravelManagementSystem tms) {

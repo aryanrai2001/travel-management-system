@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Passenger implements Serializable {
-
     private final List<Activity> activities;
     private final List<Double> activityPrices;
     private final Type type;
