@@ -19,14 +19,14 @@ public class TravelPackage implements Serializable {
 
     public void addDestination(Destination destination) {
         this.destinations.add(destination);
-        System.out.println("Added " + destination.getName() + " to " + this.name);
+        System.out.printf("Added Destination %s to Travel Package %s\n", destination.getName(), this.name);
     }
 
     public void addPassenger(Passenger passenger) {
         if (this.passengers.size() < this.passengerCapacity) {
             this.passengers.add(passenger);
             passenger.assignPackage(this);
-            System.out.println("Added " + passenger.getName() + " to " + this.name);
+            System.out.printf("Signed Up %s for Travel Package %s\n", passenger.getName(), this.name);
         } else
             System.out.println("Capacity Full!");
     }
@@ -69,5 +69,9 @@ public class TravelPackage implements Serializable {
 
     public List<Destination> getDestinations() {
         return this.destinations;
+    }
+
+    public List<Passenger> getPassengers() {
+        return this.passengers;
     }
 }

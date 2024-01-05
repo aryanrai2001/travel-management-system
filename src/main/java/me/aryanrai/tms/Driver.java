@@ -1,4 +1,4 @@
-package me.aryanrai.tms.util;
+package me.aryanrai.tms;
 
 import me.aryanrai.tms.controller.TravelManagementSystem;
 import me.aryanrai.tms.model.Passenger;

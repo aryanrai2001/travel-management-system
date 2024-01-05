@@ -9,14 +9,13 @@ public class Activity implements Serializable {
     private final String description;
     private final double cost;
     private final int capacity;
+    private final Destination destination;
     private final List<Passenger> passengers;
 
-    private Destination destination;
-
-    public Activity(String name, String description, double cost, int capacity) {
+    public Activity(String name, String description, double cost, int capacity, Destination destination) {
         this.name = name;
         this.description = description;
-        this.destination = null;
+        this.destination = destination;
         this.cost = cost;
         this.capacity = capacity;
         this.passengers = new ArrayList<>();
@@ -51,10 +50,6 @@ public class Activity implements Serializable {
 
     public Destination getDestination() {
         return this.destination;
-    }
-
-    public void setDestination(Destination destination) {
-        this.destination = destination;
     }
 
 }

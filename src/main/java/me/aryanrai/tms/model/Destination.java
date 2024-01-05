@@ -15,15 +15,11 @@ public class Destination implements Serializable {
 
     public void addActivity(Activity activity) {
         Destination previousDestination = activity.getDestination();
-        if (previousDestination != null)
-            previousDestination.removeActivity(activity);
-        activity.setDestination(this);
+        if (previousDestination != null && previousDestination != this) {
+            System.out.println("Activity already assigned to " + previousDestination.getName());
+            return;
+        }
         this.activities.add(activity);
-    }
-
-    public void removeActivity(Activity activity) {
-        this.activities.remove(activity);
-        System.out.println("Removed " + activity.getName() + " from " + this.name);
     }
 
     public void printDetails() {

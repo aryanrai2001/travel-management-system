@@ -142,7 +142,7 @@ public class TravelManagementSystem implements Serializable {
                 return;
             }
         }
-        Activity activity = new Activity(activityName, activityDescription, activityCost, activityCapacity);
+        Activity activity = new Activity(activityName, activityDescription, activityCost, activityCapacity, destination);
         destination.addActivity(activity);
     }
 
