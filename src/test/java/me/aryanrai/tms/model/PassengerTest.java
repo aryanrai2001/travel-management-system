@@ -7,11 +7,29 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PassengerTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
+
+    private static Passenger getSamplePassenger(Passenger.Type type) {
+        TravelPackage travelPackage = new TravelPackage("Package1", 10);
+        Destination destination = new Destination("Destination1");
+        destination.addActivity("Activity1", "Desc1", 30.0, 10);
+        destination.addActivity("Activity2", "Desc2", 20.0, 10);
+        travelPackage.addDestination(destination);
+        Passenger passenger = new Passenger("Passenger1", 1, 100.0, type);
+        passenger.assignPackage(travelPackage);
+
+        Activity activity1 = destination.getActivities().get(0);
+        Activity activity2 = destination.getActivities().get(1);
+        passenger.purchaseActivity(activity1);
+        passenger.purchaseActivity(activity2);
+
+        return passenger;
+    }
 
     @BeforeEach
     public void setUpStreams() {
@@ -157,22 +175,5 @@ class PassengerTest {
                 No Activities Purchased!
                 """;
         assertEquals(expectedOutput, outContent.toString().replaceAll("\r\n", "\n"));
-    }
-
-    private static Passenger getSamplePassenger(Passenger.Type type) {
-        TravelPackage travelPackage = new TravelPackage("Package1", 10);
-        Destination destination = new Destination("Destination1");
-        destination.addActivity("Activity1", "Desc1", 30.0, 10);
-        destination.addActivity("Activity2", "Desc2", 20.0, 10);
-        travelPackage.addDestination(destination);
-        Passenger passenger = new Passenger("Passenger1", 1, 100.0, type);
-        passenger.assignPackage(travelPackage);
-
-        Activity activity1 = destination.getActivities().get(0);
-        Activity activity2 = destination.getActivities().get(1);
-        passenger.purchaseActivity(activity1);
-        passenger.purchaseActivity(activity2);
-
-        return passenger;
     }
 }

@@ -33,8 +33,7 @@ public class Driver {
         if (confirm != 'y' && confirm != 'Y') {
             System.out.println("New profile created!");
             tms = new TravelManagementSystem();
-        }
-        else {
+        } else {
             while (true) {
                 File file = new File(path);
                 boolean directoryExists = file.exists();
@@ -46,8 +45,7 @@ public class Driver {
                     System.out.println("New profile created!");
                     tms = new TravelManagementSystem();
                     break;
-                }
-                else {
+                } else {
                     File[] profiles = file.listFiles();
                     assert profiles != null;
                     if (profiles.length == 0) {

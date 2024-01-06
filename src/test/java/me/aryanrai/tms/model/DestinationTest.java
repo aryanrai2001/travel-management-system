@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DestinationTest {
 
@@ -23,6 +23,7 @@ class DestinationTest {
     public void restoreStreams() {
         System.setOut(originalOut);
     }
+
     @Test
     void addActivity() {
         String activityName = "Activity1";

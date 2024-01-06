@@ -7,12 +7,25 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TravelPackageTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
+
+    private static TravelPackage getSamplePackage() {
+        TravelPackage travelPackage = new TravelPackage("MainPackage", 100);
+        Destination destination1 = new Destination("Dest1");
+        destination1.addActivity("A1D1", "Desc1D1", 100.0, 10);
+        Destination destination2 = new Destination("Dest2");
+        destination2.addActivity("A1D2", "Desc1D2", 50.0, 25);
+        destination2.addActivity("A2D2", "Desc2D2", 50.0, 75);
+        travelPackage.addDestination(destination1);
+        travelPackage.addDestination(destination2);
+        return travelPackage;
+    }
 
     @BeforeEach
     public void setUpStreams() {
@@ -69,18 +82,6 @@ class TravelPackageTest {
                 		Vacancy: 75
                 """;
         assertEquals(expectedOutput, outContent.toString().replaceAll("\r\n", "\n"));
-    }
-
-    private static TravelPackage getSamplePackage() {
-        TravelPackage travelPackage = new TravelPackage("MainPackage", 100);
-        Destination destination1 = new Destination("Dest1");
-        destination1.addActivity("A1D1", "Desc1D1", 100.0, 10);
-        Destination destination2 = new Destination("Dest2");
-        destination2.addActivity("A1D2", "Desc1D2", 50.0, 25);
-        destination2.addActivity("A2D2", "Desc2D2", 50.0, 75);
-        travelPackage.addDestination(destination1);
-        travelPackage.addDestination(destination2);
-        return travelPackage;
     }
 
     @Test

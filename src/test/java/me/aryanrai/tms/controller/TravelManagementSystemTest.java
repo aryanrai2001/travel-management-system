@@ -41,7 +41,7 @@ class TravelManagementSystemTest {
         TravelManagementSystem tms = new TravelManagementSystem();
         tms.createTravelPackage("Package1", 100);
         tms.createTravelPackage("Package2", 200);
-        
+
         outContent.reset();
         assertTrue(tms.listTravelPackages());
 
@@ -130,6 +130,7 @@ class TravelManagementSystemTest {
         tms.createTravelPackage(packageName, 100);
         assertEquals(packageName, tms.getTravelPackages().getFirst().getName());
     }
+
     @Test
     void addDestination() {
         String destinationName = "Destination1";
