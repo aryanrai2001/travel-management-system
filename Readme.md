@@ -27,8 +27,9 @@ This Java-based Travel Management System is designed to assist travel agencies i
 
 ## Implementation Details
 
-### High Level Diagram
-![High Level Diagram](misc/High Level Diagram.png)
+### High-Level Diagram
+
+![HighLevelDiagram](misc/HighLevelDiagram.png)
 
 ### Class Structure
 
