@@ -142,8 +142,7 @@ public class TravelManagementSystem implements Serializable {
                 return;
             }
         }
-        Activity activity = new Activity(activityName, activityDescription, activityCost, activityCapacity, destination);
-        destination.addActivity(activity);
+        destination.addActivity(activityName, activityDescription, activityCost, activityCapacity);
     }
 
     public void addPassenger(String name, double balance, Passenger.Type type) {
@@ -217,5 +216,13 @@ public class TravelManagementSystem implements Serializable {
             return;
         }
         travelPackage.printPassengers();
+    }
+
+    public List<TravelPackage> getTravelPackages() {
+        return travelPackages;
+    }
+
+    public List<Passenger> getPassengers() {
+        return passengers;
     }
 }

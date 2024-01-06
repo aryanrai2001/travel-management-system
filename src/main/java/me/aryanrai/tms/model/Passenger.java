@@ -73,10 +73,16 @@ public class Passenger implements Serializable {
             System.out.println("Type: Premium");
         }
         int index = 1;
+        if (activities.isEmpty()) {
+            System.out.println("No Activities Purchased!");
+            return;
+        }
+        System.out.println("Purchased Activities:");
         for (Activity activity : activities) {
-            System.out.print(index + ". ");
+            System.out.print("\t" + index + ". ");
             System.out.println(activity.getName() + ", " + activity.getDestination().getName());
-            System.out.println("Price Paid: " + activityPrices.get(index - 1));
+            if (type != Type.PREMIUM)
+                System.out.println("\tPrice Paid: " + activityPrices.get(index - 1));
             index++;
         }
     }
@@ -87,6 +93,18 @@ public class Passenger implements Serializable {
 
     public int getNumber() {
         return number;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public List<Double> getActivityPrices() {
+        return activityPrices;
     }
 
     public TravelPackage getAssignedPackage() {

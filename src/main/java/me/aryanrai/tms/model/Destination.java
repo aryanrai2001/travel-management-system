@@ -13,12 +13,8 @@ public class Destination implements Serializable {
         this.activities = new ArrayList<>();
     }
 
-    public void addActivity(Activity activity) {
-        Destination previousDestination = activity.getDestination();
-        if (previousDestination != null && previousDestination != this) {
-            System.out.println("Activity already assigned to " + previousDestination.getName());
-            return;
-        }
+    public void addActivity(String name, String description, double cost, int capacity) {
+        Activity activity = new Activity(this, name, description, cost, capacity);
         this.activities.add(activity);
     }
 

@@ -12,7 +12,7 @@ public class Activity implements Serializable {
     private final Destination destination;
     private final List<Passenger> passengers;
 
-    public Activity(String name, String description, double cost, int capacity, Destination destination) {
+    public Activity(Destination destination, String name, String description, double cost, int capacity) {
         this.name = name;
         this.description = description;
         this.destination = destination;
@@ -26,6 +26,14 @@ public class Activity implements Serializable {
     }
 
     public void addPassenger(Passenger passenger) {
+        if (this.passengers.contains(passenger)) {
+            System.out.println("Passenger already added!");
+            return;
+        }
+        if (!passenger.getAssignedPackage().getDestinations().contains(this.destination)) {
+            System.out.println("Passenger not in assigned package!");
+            return;
+        }
         if (this.passengers.size() < this.capacity) {
             this.passengers.add(passenger);
             System.out.println("Added " + passenger.getName() + " to " + this.name);
@@ -50,6 +58,10 @@ public class Activity implements Serializable {
 
     public Destination getDestination() {
         return this.destination;
+    }
+
+    public List<Passenger> getPassengers() {
+        return this.passengers;
     }
 
 }

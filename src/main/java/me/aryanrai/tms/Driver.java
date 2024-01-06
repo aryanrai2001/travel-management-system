@@ -8,6 +8,9 @@ import java.util.Scanner;
 
 public class Driver {
 
+    private static final String path = System.getenv("APPDATA") + "\\aryanrai\\TravelManagementSystem\\";
+    private static String profileName = null;
+
     private static void printMenu() {
         System.out.println("Menu:-");
         System.out.println("1. Create a Travel Package");
@@ -23,20 +26,78 @@ public class Driver {
         System.out.print("Enter your choice: ");
     }
 
-    private static TravelManagementSystem loadFromFile() {
+    private static TravelManagementSystem loadFromFile(Scanner scan) {
         TravelManagementSystem tms;
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("TMS.bin"));
-            tms = (TravelManagementSystem) objectInputStream.readObject();
-        } catch (Exception e) {
+        System.out.println("Do you want to load a profile? (y/n)");
+        char confirm = scan.nextLine().charAt(0);
+        if (confirm != 'y' && confirm != 'Y') {
+            System.out.println("New profile created!");
             tms = new TravelManagementSystem();
+        }
+        else {
+            while (true) {
+                File file = new File(path);
+                boolean directoryExists = file.exists();
+                if (!directoryExists)
+                    directoryExists = file.mkdirs();
+
+                if (!directoryExists) {
+                    System.out.println("Error in creating the directory!");
+                    System.out.println("New profile created!");
+                    tms = new TravelManagementSystem();
+                    break;
+                }
+                else {
+                    File[] profiles = file.listFiles();
+                    assert profiles != null;
+                    if (profiles.length == 0) {
+                        System.out.println("No profiles found!");
+                        System.out.println("New profile created!");
+                        tms = new TravelManagementSystem();
+                        break;
+                    }
+                    System.out.println("Available profiles:-");
+                    int index = 1;
+                    for (File profile : profiles) {
+                        if (profile.getName().endsWith(".ser"))
+                            System.out.println(index++ + ". " + profile.getName().substring(0, profile.getName().length() - 4));
+                    }
+                    System.out.print("\nEnter the name of the profile to load: ");
+                    String profile = scan.nextLine();
+                    if (profile.isEmpty()) {
+                        System.out.println("New profile created!");
+                        tms = new TravelManagementSystem();
+                        break;
+                    }
+                    try {
+                        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path + profile + ".ser"));
+                        tms = (TravelManagementSystem) objectInputStream.readObject();
+                        profileName = profile;
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Profile not found! Please try again [Enter to cancel].");
+                    }
+                }
+            }
         }
         return tms;
     }
 
-    private static void saveToFile(TravelManagementSystem tms) {
+    private static void saveToFile(TravelManagementSystem tms, Scanner scan) {
+        while (profileName == null) {
+            System.out.print("Enter the name of the profile to save: ");
+            String profile = scan.nextLine();
+            if (!profile.isEmpty())
+                profileName = profile;
+            else
+                System.out.println("Profile name cannot be empty!");
+        }
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("TMS.bin");
+            File file = new File(path);
+            if (!file.exists())
+                if (!file.mkdirs())
+                    throw new IOException();
+            FileOutputStream fileOutputStream = new FileOutputStream(path + profileName + ".ser");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(tms);
             objectOutputStream.close();
@@ -216,7 +277,7 @@ public class Driver {
     public static void main(String[] args) {
         System.out.println("Travel Management System!");
         Scanner scan = new Scanner(System.in);
-        TravelManagementSystem tms = loadFromFile();
+        TravelManagementSystem tms = loadFromFile(scan);
         boolean running = true;
         while (running) {
             System.out.println("<Press Enter to continue...>");
@@ -254,7 +315,7 @@ public class Driver {
                     break;
                 case 10:
                     running = false;
-                    saveToFile(tms);
+                    saveToFile(tms, scan);
                     break;
                 default:
                     System.out.println("Invalid Choice!");
