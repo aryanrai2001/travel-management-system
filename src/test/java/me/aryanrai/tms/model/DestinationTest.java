@@ -40,15 +40,15 @@ class DestinationTest {
 
         String expectedOutput = """
                 Destination1
-                    Activities:-
-                    a.  Activity1 - Desc1
-                        Cost: 20.0
-                        Capacity: 75
-                        Vacancy: 75
-                    b.  Activity2 - Desc2
-                        Cost: 30.0
-                        Capacity: 25
-                        Vacancy: 25
+                	Activities:-
+                	a.	Activity1 - Desc1
+                		Cost: 20.0
+                		Capacity: 75
+                		Vacancy: 75
+                	b.	Activity2 - Desc2
+                		Cost: 30.0
+                		Capacity: 25
+                		Vacancy: 25
                 """;
 
         assertEquals(expectedOutput, outContent.toString().replaceAll("\r\n", "\n"));
